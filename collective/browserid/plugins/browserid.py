@@ -6,6 +6,7 @@ import urlparse
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Acquisition import aq_parent
+from zope.event import notify
 from Products.CMFCore.utils import getToolByName
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
@@ -17,9 +18,10 @@ from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlu
 from collective.browserid.config import DEFAULT_HOST
 from collective.browserid.config import DEFAULT_TIMEOUT
 from collective.browserid.config import PLUGIN_META_TYPE
+from collective.browserid.events import BrowserIDUserAuhenticatedEvent
 
 
-manage_addBrowserIdPlugin = PageTemplateFile("../www/browseridAdd", globals(), 
+manage_addBrowserIdPlugin = PageTemplateFile("../www/browseridAdd", globals(),
                 __name__="manage_addBrowserIdPlugin")
 
 logger = logging.getLogger("PluggableAuthService")
@@ -72,20 +74,21 @@ class BrowserIdPlugin(BasePlugin):
                 'audience': self.getAudience()
                 })
             resp = urlopen(self._host, data, self._timeout)
-            
+
             creds = json.load(resp)
-        
+
         return creds
 
     # IAuthenticationPlugin implementation
     def authenticateCredentials(self, credentials):
-    
+
         if credentials['extractor'] != self.getId():
             return None
-        
+
         if credentials.get('status') == 'okay':
+            notify(BrowserIDUserAuhenticatedEvent(credentials['email']))
             return (credentials['email'], credentials['email'])
-        
+
         return None
 
     # IUserEnumerationPlugin implementation
@@ -106,7 +109,7 @@ class BrowserIdPlugin(BasePlugin):
             return None
 
         key=id and id or login
-        
+
         reg_tool = getToolByName(self, 'portal_registration')
         if not reg_tool.isValidEmail(key):
             return None

@@ -8,7 +8,7 @@ del socket
 security = ModuleSecurityInfo('collective.browserid.config')
 
 security.declarePublic('DEFAULT_HOST')
-DEFAULT_HOST = 'https://browserid.org/verify'
+DEFAULT_HOST = 'https://verifier.login.persona.org/verify'
 security.declarePublic('DEFAULT_TIMEOUT')
 DEFAULT_TIMEOUT = 15
 security.declarePublic('PLUGIN_META_TYPE')

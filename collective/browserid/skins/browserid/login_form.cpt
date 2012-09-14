@@ -43,7 +43,7 @@
 
             <tal:browserid condition="context/hasBrowserIdExtractor">
                 <dt id="fieldsetlegend-browserid-login" class="browserid-login" i18n:translate="legend_browserid">
-                    BrowserID login
+                    Mozilla Persona login
                 </dt>
 
                 <dd id="fieldset-browserid-login" class="browserid-login">
@@ -67,7 +67,7 @@
 				               tal:attributes="src string:${context/portal_url}/browserid_sign_in.png"/>
 				        </button>
                            <a href="http://browserid.org" class="discreet link-plain"
-                              i18n:translate="info_browserid">What is BrowserID?</a>
+                              i18n:translate="info_browserid">What is Mozilla Persona?</a>
 				      </div>
                    </form>
                </dd>
