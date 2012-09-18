@@ -1,6 +1,7 @@
+from setuptools import find_packages
 from setuptools import setup
 
-version = '1.2'
+version = '1.3'
 
 long_description = (
     open('README.rst').read()
@@ -27,6 +28,8 @@ setup(name='collective.browserid',
       author_email='',
       url='http://github.com/mitchellrj/collective.browserid',
       license='gpl',
+      packages=find_packages(),
+      namespace_packages=['collective'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
@@ -35,7 +38,7 @@ setup(name='collective.browserid',
       extras_require={'test': ['plone.app.testing']},
       entry_points="""
       # -*- Entry points: -*-
-  	  [z3c.autoinclude.plugin]
-  	  target = plone
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )
